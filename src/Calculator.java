@@ -4,6 +4,7 @@ This calculator implements full functionality of a simple calculator by converti
 infix expression to postfix expression.
 
  */
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -16,6 +17,13 @@ public class Calculator extends JFrame {
 
 
     public Calculator() {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         this.setTitle("Calculator");
         this.setSize(400, 450);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -58,7 +66,8 @@ public class Calculator extends JFrame {
                     if (!evaluateExpression()) {
                         numberBar.setText("Error");
                     } else {
-                       numberBar.setText(memory.get(0));
+                        if (memory.size() != 0)
+                            numberBar.setText(memory.get(0));
                     }
                     memory.clear();
                 } else {
@@ -83,13 +92,12 @@ public class Calculator extends JFrame {
         String symbol;
         boolean isPrevOperator = false;
 
-        if(memory.size() == 0 ){
+        if (memory.size() == 0) {
             return true;
         }
-        if(!isNumber(memory.get(0)) || !isNumber(memory.get(memory.size()-1))) {
+        if (!isNumber(memory.get(0)) || !isNumber(memory.get(memory.size() - 1))) {
             return false;
         }
-
 
 
         int initialMemSize = memory.size();
@@ -102,17 +110,17 @@ public class Calculator extends JFrame {
                 numParseStack.add(0, symbol);
                 isPrevOperator = false;
                 if (i == initialMemSize - 1) {
-                    result.add(0,(double) parseNum(numParseStack));
+                    result.add(0, (double) parseNum(numParseStack));
                     calcStackExpression(result, stack);
                 }
 
             } else {
-                if(isPrevOperator){
+                if (isPrevOperator) {
                     return false;
                 }
 
                 isPrevOperator = true;
-                result.add(0,(double) parseNum(numParseStack));
+                result.add(0, (double) parseNum(numParseStack));
 
 
                 if (stack.size() == 0) {
@@ -165,7 +173,7 @@ public class Calculator extends JFrame {
                     temp = result.remove(0) / temp;
                     break;
                 case '-':
-                    temp = result.remove(0)- temp;
+                    temp = result.remove(0) - temp;
                     break;
                 case '+':
                     temp = temp + result.remove(0);
@@ -209,9 +217,12 @@ public class Calculator extends JFrame {
     }
 
     private void setButtonStyle(JButton button) {
+
+
         button.setFont(new Font("Serif", Font.BOLD, 30));
-        button.setBackground(new Color(190, 110, 50));
+        button.setBackground(new Color(187, 110, 32));
         button.setForeground(Color.white);
+        button.setOpaque(true);
         button.setFocusPainted(false);
         button.setBorderPainted(true);
 
